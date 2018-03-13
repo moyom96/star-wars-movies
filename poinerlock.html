@@ -9,21 +9,27 @@
 				width: 100%;
 				height: 100%;
 			}
+
 			body {
-				background-color: #000000;
+				background-color: #ffffff;
 				margin: 0;
 				overflow: hidden;
 				font-family: arial;
 			}
+
 			#blocker {
 
 				position: absolute;
+
 				width: 100%;
 				height: 100%;
+
 				background-color: rgba(0,0,0,0.5);
 
 			}
+
 			#instructions {
+
 				width: 100%;
 				height: 100%;
 
@@ -47,42 +53,42 @@
 				text-align: center;
 
 				cursor: pointer;
+
 			}
+
 		</style>
 	</head>
 	<body>
-		<script src="js/three.js"></script>
-		<script src="js/PointerLockControls.js"></script>
+		<script src="../build/three.js"></script>
+		<script src="js/controls/PointerLockControls.js"></script>
 
 		<div id="blocker">
+
 			<div id="instructions">
 				<span style="font-size:40px">Click to play</span>
 				<br />
 				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
 			</div>
+
 		</div>
 
 		<script>
-			var origin = new THREE.Object3D();
 
 			var camera, scene, renderer, controls;
 
 			var objects = [];
 
-			var raycaster_north, raycaster_south, raycaster_east, raycaster_west, raycaster_y;
+			var raycaster;
 
 			var blocker = document.getElementById( 'blocker' );
 			var instructions = document.getElementById( 'instructions' );
-
-			var onObject = false;
-			var collision_north = false;
-			var collision_south = false;
 
 			// http://www.html5rocks.com/en/tutorials/pointerlock/intro/
 
 			var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
 
 			if ( havePointerLock ) {
+
 				var element = document.body;
 
 				var pointerlockchange = function ( event ) {
@@ -95,16 +101,21 @@
 						blocker.style.display = 'none';
 
 					} else {
+
 						controls.enabled = false;
 
 						blocker.style.display = 'block';
 
 						instructions.style.display = '';
+
 					}
+
 				};
 
 				var pointerlockerror = function ( event ) {
+
 					instructions.style.display = '';
+
 				};
 
 				// Hook pointer lock state change events
@@ -146,27 +157,18 @@
 			var prevTime = performance.now();
 			var velocity = new THREE.Vector3();
 			var direction = new THREE.Vector3();
-			var worldDirection = new THREE.Vector3(); // create once and reuse it!
 
 			function init() {
 
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x000000 );
+				scene.background = new THREE.Color( 0xffffff );
 				scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 
-				//light
-				light = new THREE.RectAreaLight( 0xFF1F1C, 100000, 100, 100 );
-				light.intensity = 100000;
-				light.position.set( 0, 50, 100 );
-				light.lookAt(origin.position);
-				light.target = origin;
-				lightHelper = new THREE.RectAreaLightHelper( light );
-				scene.add( lightHelper );
+				var light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
+				light.position.set( 0.5, 1, 0.75 );
 				scene.add( light );
-				scene.add( light.target );
-
 
 				controls = new THREE.PointerLockControls( camera );
 				scene.add( controls.getObject() );
@@ -182,8 +184,7 @@
 
 						case 37: // left
 						case 65: // a
-							moveLeft = true; 
-							break;
+							moveLeft = true; break;
 
 						case 40: // down
 						case 83: // s
@@ -227,6 +228,7 @@
 						case 68: // d
 							moveRight = false;
 							break;
+
 					}
 
 				};
@@ -234,38 +236,84 @@
 				document.addEventListener( 'keydown', onKeyDown, false );
 				document.addEventListener( 'keyup', onKeyUp, false );
 
+				raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
+
 				// floor
-				var geometry = new THREE.PlaneGeometry( 400, 400 );
-				var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide} );
-				plane = new THREE.Mesh( geometry, material );
-				plane.name = 'plane';
-				plane.position.set(0,-10,0);
-				plane.rotation.x = Math.PI / 2;
-				scene.add(plane);
+
+				var floorGeometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
+				floorGeometry.rotateX( - Math.PI / 2 );
+
+				for ( var i = 0, l = floorGeometry.vertices.length; i < l; i ++ ) {
+
+					var vertex = floorGeometry.vertices[ i ];
+					vertex.x += Math.random() * 20 - 10;
+					vertex.y += Math.random() * 2;
+					vertex.z += Math.random() * 20 - 10;
+
+				}
+
+				for ( var i = 0, l = floorGeometry.faces.length; i < l; i ++ ) {
+
+					var face = floorGeometry.faces[ i ];
+					face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+					face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+					face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+
+				}
+
+				var floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: THREE.VertexColors } );
+
+				var floor = new THREE.Mesh( floorGeometry, floorMaterial );
+				scene.add( floor );
 
 				// objects
 
-				//cube
-				var cube_geometry = new THREE.BoxGeometry(50, 50, 50);
-				var cube_material = new THREE.MeshNormalMaterial();
-				var cube = new THREE.Mesh(cube_geometry, cube_material);
-				cube.position.set(0,0,-100);
-				scene.add(cube);
-				objects.push(cube);
+				var boxGeometry = new THREE.BoxGeometry( 20, 20, 20 );
+
+				for ( var i = 0, l = boxGeometry.faces.length; i < l; i ++ ) {
+
+					var face = boxGeometry.faces[ i ];
+					face.vertexColors[ 0 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+					face.vertexColors[ 1 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+					face.vertexColors[ 2 ] = new THREE.Color().setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+
+				}
+
+				for ( var i = 0; i < 500; i ++ ) {
+
+					var boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: THREE.VertexColors } );
+					boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
+
+					var box = new THREE.Mesh( boxGeometry, boxMaterial );
+					box.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
+					box.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
+					box.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
+
+					scene.add( box );
+					objects.push( box );
+
+				}
+
+				//
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				document.body.appendChild( renderer.domElement );
 
+				//
+
 				window.addEventListener( 'resize', onWindowResize, false );
 
 			}
 
 			function onWindowResize() {
+
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
+
 				renderer.setSize( window.innerWidth, window.innerHeight );
+
 			}
 
 			function animate() {
@@ -274,43 +322,12 @@
 
 				if ( controlsEnabled === true ) {
 
-					raycaster_north = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( 0, 0, 1 ), 0, 10 );
+					raycaster.ray.origin.copy( controls.getObject().position );
+					raycaster.ray.origin.y -= 10;
 
-					raycaster_north.ray.origin.copy( controls.getObject().position );
-					raycaster_north.ray.origin.x += 10;
+					var intersections = raycaster.intersectObjects( objects );
 
-					raycaster_south = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( 0, 0, -1 ), 0, 10 );
-
-					raycaster_south.ray.origin.copy( controls.getObject().position );
-					raycaster_south.ray.origin.x -= 10;
-
-					raycaster_east = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( 1, 0, 0 ), 0, 10 );
-
-					raycaster_east.ray.origin.copy( controls.getObject().position );
-					raycaster_east.ray.origin.z += 10;
-
-					raycaster_west = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( -1, 0, 0 ), 0, 10 );
-
-					raycaster_west.ray.origin.copy( controls.getObject().position );
-					raycaster_west.ray.origin.z -= 10;
-
-					raycaster_y = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
-
-					raycaster_y.ray.origin.copy( controls.getObject().position );
-					raycaster_y.ray.origin.y -= 10;
-
-
-					var intersections_y = raycaster_y.intersectObjects( objects );
-					var intersections_north = raycaster_north.intersectObjects( objects );
-					var intersections_south = raycaster_south.intersectObjects( objects );
-					var intersections_east = raycaster_east.intersectObjects( objects );
-					var intersections_west = raycaster_west.intersectObjects( objects );
-
-					onObject = intersections_y.length > 0;
-					collision_north = intersections_north.length > 0;
-					collision_south = intersections_south.length > 0;
-					collision_east = intersections_east.length > 0;
-					collision_west = intersections_west.length > 0;
+					var onObject = intersections.length > 0;
 
 					var time = performance.now();
 					var delta = ( time - prevTime ) / 1000;
@@ -328,124 +345,10 @@
 					if ( moveLeft || moveRight ) velocity.x -= direction.x * 400.0 * delta;
 
 					if ( onObject === true ) {
+
 						velocity.y = Math.max( 0, velocity.y );
 						canJump = true;
-					}
 
-					if ( collision_north === true ) {
-						if (camera.getWorldDirection(worldDirection).x >= 0){
-							if(direction.x == -1){
-								velocity.x = 0;
-							}
-							
-						} 
-
-						if (camera.getWorldDirection(worldDirection).x < 0){
-							if(direction.x == 1){
-								velocity.x = 0;
-							}
-						}
-							
-						if (camera.getWorldDirection(worldDirection).z >= 0){
-							if(direction.z == 1){
-								velocity.z = 0;
-							}
-							
-						}
-
-						if (camera.getWorldDirection(worldDirection).z < 0){
-							if(direction.z == -1){
-								velocity.z = 0;
-							}
-							
-						}
-					}
-
-					if ( collision_south === true ) {
-						if (camera.getWorldDirection(worldDirection).x >= 0){
-							if(direction.x == 1){
-								velocity.x = 0;
-							}
-							
-						} 
-
-						if (camera.getWorldDirection(worldDirection).x < 0){
-							if(direction.x == -1){
-								velocity.x = 0;
-							}
-						}
-							
-						if (camera.getWorldDirection(worldDirection).z >= 0){
-							if(direction.z == -1){
-								velocity.z = 0;
-							}
-							
-						}
-
-						if (camera.getWorldDirection(worldDirection).z < 0){
-							if(direction.z == 1){
-								velocity.z = 0;
-							}
-							
-						}
-					}
-
-					if ( collision_east === true ) {
-						if (camera.getWorldDirection(worldDirection).x >= 0){
-							if(direction.z == 1){
-								velocity.z = 0;
-							}
-							
-						} 
-
-						if (camera.getWorldDirection(worldDirection).x < 0){
-							if(direction.z == -1){
-								velocity.z = 0;
-							}
-						}
-							
-						if (camera.getWorldDirection(worldDirection).z >= 0){
-							if(direction.x == 1){
-								velocity.x = 0;
-							}
-							
-						}
-
-						if (camera.getWorldDirection(worldDirection).z < 0){
-							if(direction.x == -1){
-								velocity.x = 0;
-							}
-							
-						}
-					}
-
-					if ( collision_west === true ) {
-						if (camera.getWorldDirection(worldDirection).x >= 0){
-							if(direction.z == -1){
-								velocity.z = 0;
-							}
-							
-						} 
-
-						if (camera.getWorldDirection(worldDirection).x < 0){
-							if(direction.z == 1){
-								velocity.z = 0;
-							}
-						}
-							
-						if (camera.getWorldDirection(worldDirection).z >= 0) {
-							if(direction.x == -1){
-								velocity.x = 0;
-							}
-							
-						}
-
-						if (camera.getWorldDirection(worldDirection).z < 0){
-							if(direction.x == 1){
-								velocity.x = 0;
-							}
-							
-						}
 					}
 
 					controls.getObject().translateX( velocity.x * delta );
@@ -453,11 +356,16 @@
 					controls.getObject().translateZ( velocity.z * delta );
 
 					if ( controls.getObject().position.y < 10 ) {
+
 						velocity.y = 0;
 						controls.getObject().position.y = 10;
+
 						canJump = true;
+
 					}
+
 					prevTime = time;
+
 				}
 
 				renderer.render( scene, camera );
