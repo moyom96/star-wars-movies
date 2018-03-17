@@ -35,7 +35,7 @@ class MovieScreen{
 			map: this.videoTexture, overdraw: true, side:THREE.DoubleSide } );
 		// the geometry on which the movie will be displayed;
 		// 		movie image will be scaled to fit these dimensions.
-		this.movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+		this.movieGeometry = new THREE.PlaneGeometry( 200, 84, 4, 4 );
 		this.movieScreen = new THREE.Mesh( this.movieGeometry, this.movieMaterial );
 		this.movieScreen.position.set(x,y,z);
 		scene.add(this.movieScreen);
