@@ -188,7 +188,9 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				// movie screen test
-				testMovie = new MovieScreen("textures/last_jedi.mp4", 0, 50, 0);
+				testMovie = new MovieScreen("textures/last_jedi.mp4", 0, 50, -100);
+
+				objects.push(testMovie.movieScreen);
 			}
 
 			function onWindowResize() {
@@ -202,7 +204,6 @@
 				requestAnimationFrame( animate );
 
 				collisions(velocity, direction);
-
 
 				testMovie.renderVideoScreen();
 				renderer.render( scene, camera );
