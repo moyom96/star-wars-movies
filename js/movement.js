@@ -126,6 +126,9 @@ function collisions(velocity, direction){
 		canJump = true;
 	}
 
+		console.log(camera.getWorldDirection(worldDirection));
+
+
 	if ( collision_north === true ) {
 		if (camera.getWorldDirection(worldDirection).x >= 0){
 			if(direction.x == -1){
