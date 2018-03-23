@@ -85,12 +85,12 @@ class ProjectionRoom{
 
 
 		for(var i = 10; i <= width; i += 90){
-			light1 = new THREE.PointLight( 0xffd6aa, 1.5, width / 2);
-			light1.position.set(x + (depth / 2) - 2, height / 2, i + x - (width /2));
+			light1 = new THREE.PointLight( 0xfff0db, 1.5, width / 2);
+			light1.position.set(x + (depth / 2) - 2, height / 2, i + z - (width /2));
 			lights_right_array.push(light1);
 
-			light2 = new THREE.PointLight( 0xffd6aa, 1.5, width / 2 );
-			light2.position.set(x - (depth / 2) + 2 , height / 2, i + x - (width /2));
+			light2 = new THREE.PointLight( 0xfff0db, 1.5, width / 2 );
+			light2.position.set(x - (depth / 2) + 2 , height / 2, i + z- (width /2));
 			lights_left_array.push(light2);
 
 			scene.add( light1 );

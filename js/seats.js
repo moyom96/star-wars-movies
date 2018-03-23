@@ -48,6 +48,7 @@ loader.load( '../assets/chairstlobj.obj', function ( object ) {
     object.scale.y = .01;
     object.scale.z = .01;
     scene.add( object );
+    objects.push(object);
 
 } );  
 
@@ -56,22 +57,23 @@ loader.load( '../assets/chairstlobj.obj', function ( object ) {
 var loader = new THREE.STLLoader();
 loader.load( 'assets/chairstl.stl', function ( geometry ) {
 
-    var material = new THREE.MeshPhongMaterial( { color: 'skyblue' } );
+    var material = new THREE.MeshStandardMaterial( { color: 'red' } );
 
     var mesh = new THREE.Mesh( geometry, material );
     
-    var object = mesh;
+    var seat = mesh;
     
-    object.position.x = 10;
-    object.position.y = 0;
-    object.position.z = 0;    
-    object.scale.x = .01;
-    object.scale.y = .01;
-    object.scale.z = .01;
+    seat.position.x = -10;
+    seat.position.y = 0;
+    seat.position.z = -50;    
+    seat.scale.x = .025;
+    seat.scale.y = .025;
+    seat.scale.z = .025;
     
     console.log( mesh);
 
-    scene.add( mesh );
+    scene.add( seat );
+    objects.push(seat);
 
 } );
 

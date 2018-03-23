@@ -158,8 +158,8 @@
 				scene.background = new THREE.Color( 0x000000 );
 
 				//light
-				ambientLight = new THREE.AmbientLight( 0xffc58f, 0.5 );
-				//scene.add(ambientLight);
+				ambientLight = new THREE.AmbientLight( 0xffc58f, 0.2 );
+				scene.add(ambientLight);
 			
 				//scene.add( ambientLight );
 				/*
@@ -199,7 +199,7 @@
 
 				// projection rooms
 				projectionRoom1 = new ProjectionRoom(300, 120, 220, 0, 0, 0, "B", objects);
-				projectionRoom2 = new ProjectionRoom(150, 120, 110, 300, 0, 300, "F", objects);
+				projectionRoom2 = new ProjectionRoom(300, 120, 220, 220, 0, 0, "B", objects);
 
 				objects.push(screen1.movieScreen);
 			}
