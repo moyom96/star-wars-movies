@@ -56,6 +56,9 @@
 		<script src="js/movement.js"></script>
 		<script src="js/movieScreen.js"></script>
 		<script src="js/projectionRoom.js"></script>
+        <script src="js/OBJLoader.js"></script>
+        <script src="js/STLLoader.js"></script>
+        <script src="js/seats.js"></script>
 
 		<div id="blocker">
 			<div id="instructions">
@@ -198,6 +201,7 @@
 
 				objects.push(screen1.movieScreen);
 			}
+            
 
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
