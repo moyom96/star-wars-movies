@@ -43,14 +43,6 @@ class ProjectionRoom{
 			objects.push(this.frontWall2);
 			objects.push(this.frontWall3);
 
-			//seats
-			for(var i = 80; i <= (width - 50); i += 50){
-				for (var j = 40; j <= (depth - 50); j += 15){
-					var seat = new Seat(x - (depth / 2) + j, y, z + (width / 2) - i, door);
-					this.seats_array.push(seat);
-				}
-			}
-
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
 			this.frontWall = new THREE.Mesh( geometry, material );
@@ -59,6 +51,7 @@ class ProjectionRoom{
 			objects.push(this.frontWall);
 		}
 
+		// Back wall
 		if(door == "B"){
 			this.backWall1 = new THREE.Mesh( geometry1, material );
 			this.backWall2 = new THREE.Mesh( geometry1, material );
@@ -73,14 +66,6 @@ class ProjectionRoom{
 			objects.push(this.backWall2);
 			objects.push(this.backWall3);
 
-			//seats
-			for(var i = 80; i <= (width - 50); i += 50){
-				for (var j = 40; j <= (depth - 50); j += 15){
-					var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
-					this.seats_array.push(seat);
-				}
-			}
-
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
 			this.backWall = new THREE.Mesh( geometry, material );
@@ -89,6 +74,7 @@ class ProjectionRoom{
 			objects.push(this.backWall);
 		}
 
+		// Right wall
 		var geometry = new THREE.BoxGeometry( width, height, 0 );
 		this.rightWall = new THREE.Mesh( geometry, material );
 		this.rightWall.position.set(x + (depth / 2), height / 2, z);
@@ -98,6 +84,7 @@ class ProjectionRoom{
 		scene.add(this.rightWall);
 		objects.push(this.rightWall);
 
+		// Left wall
 		var geometry = new THREE.PlaneGeometry( width, height );
 		this.leftWall = new THREE.Mesh( geometry, material );
 		this.leftWall.position.set(x - (depth / 2), height / 2, z);
@@ -107,6 +94,15 @@ class ProjectionRoom{
 		scene.add(this.leftWall);
 		objects.push(this.leftWall);
 
+		// Seats
+		for(var i = 80; i <= (width - 50); i += 50){
+			for (var j = 40; j <= (depth - 50); j += 15){
+				var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
+				this.seats_array.push(seat);
+			}
+		}
+
+		// Lights
 		room_light1 = new THREE.PointLight( 0xfff0db, 1, width);
 		room_light1.position.set(x, height / 2, z + (width / 4));
 		room_light1.castShadow = true;
