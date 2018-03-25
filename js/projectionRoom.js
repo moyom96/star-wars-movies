@@ -4,10 +4,10 @@ class ProjectionRoom{
 	constructor(width, height, depth, x, y, z, door, objects){
 		
 		//lights
-		var light1;
-		var light2;
-		var room_light;
-		var pointLightHelper;
+		var room_light1;
+		var room_light2;
+		var pointLightHelper1;
+		var pointLightHelper2;
 		var lights_num = width / 20;
 		this.lights_array = [];
 		this.seats_array = [];
@@ -107,14 +107,23 @@ class ProjectionRoom{
 		scene.add(this.leftWall);
 		objects.push(this.leftWall);
 
-		room_light = new THREE.PointLight( 0xfff0db, 1, width);
-		room_light.position.set(x, height / 2, z);
-		room_light.castShadow = true;
+		room_light1 = new THREE.PointLight( 0xfff0db, 1, width);
+		room_light1.position.set(x, height / 2, z + (width / 4));
+		room_light1.castShadow = true;
 
-		pointLightHelper = new THREE.PointLightHelper( room_light, 2 );
-		scene.add( pointLightHelper );
+		room_light2 = new THREE.PointLight( 0xfff0db, 1, width);
+		room_light2.position.set(x, height / 2, z - (width / 4));
+		room_light2.castShadow = true;
 
-		scene.add( room_light );
+
+		pointLightHelper1 = new THREE.PointLightHelper( room_light1, 2 );
+		scene.add( pointLightHelper1 );
+
+		pointLightHelper2 = new THREE.PointLightHelper( room_light2, 2 );
+		scene.add( pointLightHelper2 );
+
+		scene.add( room_light1 );
+		scene.add( room_light2 );
 
 		/*
 		for(var i = 10; i <= width; i += 90) {
