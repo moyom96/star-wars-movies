@@ -157,13 +157,9 @@
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0x000000 );
 
-				//light
-				ambientLight = new THREE.AmbientLight( 0xffc58f, 0.2, 1000 );
-				scene.add(ambientLight);
-			
 
 				// floor
-				var geometry = new THREE.PlaneGeometry( 1000, 300 );
+				var geometry = new THREE.PlaneGeometry(880 ,1360 );
 				var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide} );
 				floor = new THREE.Mesh( geometry, material );
 				floor.name = 'floor';
@@ -178,7 +174,6 @@
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.shadowMap.enable = true;
-				renderer.shadowMap.renderReverseSided = false;
 				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -188,13 +183,24 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				// screens
-				screen1 = new MovieScreen("textures/last_jedi.mp4", 0, 70, -149.8);
+				//screen1 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, -149.8);
+				//screen2 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, 529.8);
+				//screen2.movieScreen.rotation.y = Math.PI;
+				//screen3 = new MovieScreen("textures/revenge_sith.mp4", -220, 70, -149.8);
+				screen4 = new MovieScreen("textures/last_jedi.mp4", -220, 70, 529.8);
+				screen4.movieScreen.rotation.y = Math.PI;
+
+				//objects.push(screen1.movieScreen);
+				//objects.push(screen2.movieScreen);
+				//objects.push(screen3.movieScreen);
+				objects.push(screen4.movieScreen);
 
 				// projection rooms
 				projectionRoom1 = new ProjectionRoom(300, 120, 220, 0, 0, 0, "B", objects);
-				projectionRoom2 = new ProjectionRoom(300, 120, 220, 220, 0, 0, "B", objects);
+				projectionRoom2 = new ProjectionRoom(300, 120, 220, 0, 0, 380, "F", objects);
+				projectionRoom3 = new ProjectionRoom(300, 120, 220, -220, 0, 0, "B", objects);
+				projectionRoom4 = new ProjectionRoom(300, 120, 220, -220, 0, 380, "F", objects);
 
-				objects.push(screen1.movieScreen);
 			}
             
 
@@ -223,8 +229,11 @@
 				//scene.remove(ambientLight);
 				*/
 				
-
-				screen1.renderVideoScreen();
+				// Render videos. Condition to render only when in room
+				// screen1.renderVideoScreen();
+				// screen2.renderVideoScreen();
+				// screen3.renderVideoScreen();
+				screen4.renderVideoScreen();
 				renderer.render( scene, camera );
 				renderer.render( scene, camera );
 			}
