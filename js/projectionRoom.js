@@ -43,12 +43,21 @@ class ProjectionRoom{
 			objects.push(this.frontWall2);
 			objects.push(this.frontWall3);
 
+			// Seats
+			for(var i = 80; i <= (width - 50); i += 50){
+				for (var j = 50; j <= (depth - 40); j += 15){
+					var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
+					this.seats_array.push(seat);
+				}
+			}
+
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
 			this.frontWall = new THREE.Mesh( geometry, material );
 			this.frontWall.position.set(x, height / 2, z - (width / 2));
 			scene.add(this.frontWall);
 			objects.push(this.frontWall);
+
 		}
 
 		// Back wall
@@ -65,6 +74,14 @@ class ProjectionRoom{
 			objects.push(this.backWall1);
 			objects.push(this.backWall2);
 			objects.push(this.backWall3);
+
+			// Seats
+			for(var i = 80; i <= (width - 50); i += 50){
+				for (var j = 40; j <= (depth - 50); j += 15){
+					var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
+					this.seats_array.push(seat);
+				}
+			}
 
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
@@ -94,13 +111,6 @@ class ProjectionRoom{
 		scene.add(this.leftWall);
 		objects.push(this.leftWall);
 
-		// Seats
-		for(var i = 80; i <= (width - 50); i += 50){
-			for (var j = 40; j <= (depth - 50); j += 15){
-				var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
-				this.seats_array.push(seat);
-			}
-		}
 
 		// Lights
 		room_light1 = new THREE.PointLight( 0xfff0db, 1, width);

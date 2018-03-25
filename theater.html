@@ -183,12 +183,19 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 
 				// screens
-				//screen1 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, -149.8);
-				//screen2 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, 529.8);
-				//screen2.movieScreen.rotation.y = Math.PI;
-				//screen3 = new MovieScreen("textures/revenge_sith.mp4", -220, 70, -149.8);
+				screen1 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, -149.8);
+				//screen1.video.pause();
+
+				screen2 = new MovieScreen("textures/rogue_one.mp4", 0, 70, 529.8);
+				screen2.movieScreen.rotation.y = Math.PI;
+				screen2.video.pause();
+
+				screen3 = new MovieScreen("textures/return_jedi.mp4", -220, 70, -149.8);
+				screen3.video.pause();
+
 				screen4 = new MovieScreen("textures/last_jedi.mp4", -220, 70, 529.8);
 				screen4.movieScreen.rotation.y = Math.PI;
+				screen4.video.pause();
 
 				//objects.push(screen1.movieScreen);
 				//objects.push(screen2.movieScreen);
@@ -202,7 +209,6 @@
 				projectionRoom4 = new ProjectionRoom(300, 120, 220, -220, 0, 380, "F", objects);
 
 			}
-            
 
 			function onWindowResize() {
 				camera.aspect = window.innerWidth / window.innerHeight;
@@ -230,11 +236,10 @@
 				*/
 				
 				// Render videos. Condition to render only when in room
-				// screen1.renderVideoScreen();
-				// screen2.renderVideoScreen();
-				// screen3.renderVideoScreen();
+				screen1.renderVideoScreen();
+				screen2.renderVideoScreen();
+				screen3.renderVideoScreen();
 				screen4.renderVideoScreen();
-				renderer.render( scene, camera );
 				renderer.render( scene, camera );
 			}
 
