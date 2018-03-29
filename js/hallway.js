@@ -30,7 +30,7 @@ class Hallway{
 
 		//walls
 
-		var	wallTexture = new THREE.TextureLoader().load("textures/wall1.jpg");
+		var	wallTexture = new THREE.TextureLoader().load("textures/wall2.jpg");
 
 		var geometry = new THREE.PlaneGeometry( depth, height );
 		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x000000} );
