@@ -2,7 +2,7 @@ class Poster{
 
 	constructor( width, height, x, y, z, objects, file, side){
 
-    var rectLight = new THREE.RectAreaLight( 0xffffff, 200, width+0.5, height+0.5 );
+    var rectLight = new THREE.RectAreaLight( 0xffffff, 10, width+0.5, height+0.5 );
 		rectLight.position.set( x,y,z );
 		scene.add( rectLight );
     if (side == "R") {

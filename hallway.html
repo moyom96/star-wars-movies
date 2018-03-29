@@ -56,9 +56,11 @@
 		<script src="js/movement.js"></script>
 		<script src="js/movieScreen.js"></script>
 		<script src="js/projectionRoom.js"></script>
-		<script src="js/hallway.js"></script>
+        <script src="js/OBJLoader.js"></script>
+        <script src="js/STLLoader.js"></script>
+        <script src="js/seats.js"></script>
 		<script src="js/poster.js"></script>
-
+		<script src="js/hallway.js"></script>
 
 		<div id="blocker">
 			<div id="instructions">
@@ -152,54 +154,64 @@
 			function init() {
 
 				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
-
+				camera.position.y = 15;
 
 				scene = new THREE.Scene();
 				scene.background = new THREE.Color( 0x000000 );
 
-				//light
-				ambientLight = new THREE.AmbientLight( 0xffffff, 1 );
-				//scene.add(ambientLight);
-
-				//scene.add( ambientLight );
-				light = new THREE.RectAreaLight( 0xFFFFFF, 100000, 100, 100 );
-				light.intensity = 100000;
-				light.position.set( 0, 50, 150 );
-				light.lookAt(origin.position);
-				light.target = origin;
-				lightHelper = new THREE.RectAreaLightHelper( light );
-				scene.add( lightHelper );
-				scene.add( light );
-				scene.add( light.target );
-
 
 				// floor
-				/*var geometry = new THREE.PlaneGeometry( 25, 145 );
+	/*			var geometry = new THREE.PlaneGeometry(880 ,1360 );
 				var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide} );
 				floor = new THREE.Mesh( geometry, material );
 				floor.name = 'floor';
-				floor.position.set(0,0,-70);
+				floor.position.set(0,0,0);
 				floor.rotation.x = Math.PI / 2;
-				scene.add(floor); */
+				floor.receiveShadow = true;
+				scene.add(floor);
+*/
 
 				//movement
 				init_movement();
 
 				renderer = new THREE.WebGLRenderer();
+				renderer.shadowMap.enable = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
+
 				document.body.appendChild( renderer.domElement );
 
 				window.addEventListener( 'resize', onWindowResize, false );
-
+/*
 				// screens
-				//screen1 = new MovieScreen("textures/last_jedi.mp4", 0, 50, -149.8);
+				screen1 = new MovieScreen("textures/revenge_sith.mp4", 0, 70, -149.8);
+				//screen1.video.pause();
+
+				screen2 = new MovieScreen("textures/rogue_one.mp4", 0, 70, 529.8);
+				screen2.movieScreen.rotation.y = Math.PI;
+				screen2.video.pause();
+
+				screen3 = new MovieScreen("textures/return_jedi.mp4", -220, 70, -149.8);
+				screen3.video.pause();
+
+				screen4 = new MovieScreen("textures/last_jedi.mp4", -220, 70, 529.8);
+				screen4.movieScreen.rotation.y = Math.PI;
+				screen4.video.pause();
+
+				objects.push(screen1.movieScreen);
+				objects.push(screen2.movieScreen);
+				objects.push(screen3.movieScreen);
+				objects.push(screen4.movieScreen);
 
 				// projection rooms
-				//projectionRoom1 = new ProjectionRoom(300, 100, 220, 0, 0, 0, objects);
-				hallway = new Hallway(200, 25, 25, 0, 0, -100, objects);
+				projectionRoom1 = new ProjectionRoom(300, 120, 220, 0, 0, 0, "B", objects);
+				projectionRoom2 = new ProjectionRoom(300, 120, 220, 0, 0, 380, "F", objects);
+				projectionRoom3 = new ProjectionRoom(300, 120, 220, -220, 0, 0, "B", objects);
+				projectionRoom4 = new ProjectionRoom(300, 120, 220, -220, 0, 380, "F", objects);
+*/
 
-				//objects.push(screen1.movieScreen);
+				hallway = new Hallway(200, 25, 25, 0, 12.5, -100, objects);
 			}
 
 			function onWindowResize() {
@@ -213,7 +225,26 @@
 
 				collisions(velocity, direction);
 
-				//screen1.renderVideoScreen();
+				// Turn off the lights on all rooms
+
+				/*
+
+				for(var i = 0; i < projectionRoom1.lights_array.length; i++){
+					projectionRoom1.lights_array[i].intensity = 0;
+				}
+
+				for(var i = 0; i < projectionRoom2.lights_array.length; i++){
+					projectionRoom2.lights_array[i].intensity = 0;
+				}
+				//scene.remove(ambientLight);
+				*/
+/*
+				// Render videos. Condition to render only when in room
+				screen1.renderVideoScreen();
+				screen2.renderVideoScreen();
+				screen3.renderVideoScreen();
+				screen4.renderVideoScreen();
+*/
 				renderer.render( scene, camera );
 			}
 
