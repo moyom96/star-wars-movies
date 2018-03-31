@@ -1,8 +1,15 @@
 // roof
 class ProjectionRoom{
 
-	constructor(width, height, depth, x, y, z, door, objects){
-
+	constructor(width, height, depth, x, y, z, door, objects, screen){
+		this.width = width;
+		this.height = height;
+		this.depth = depth;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.screen = screen;
+		
 		//lights
 		var room_light1;
 		var room_light2;
@@ -145,6 +152,8 @@ class ProjectionRoom{
 
 		scene.add( room_light1 );
 		scene.add( room_light2 );
+		this.lights_array.push(room_light1);
+		this.lights_array.push(room_light2);
 
 		/*
 		for(var i = 10; i <= width; i += 90) {
@@ -174,4 +183,10 @@ class ProjectionRoom{
 		*/
 	}
 
+	hasInside(positionVector){
+		return (positionVector.x >= (this.x - this.width/2) && positionVector.x <= (this.x + this.width/2)
+			&& positionVector.z >= (this.z - this.depth/2) && positionVector.z <= (this.z + this.depth/2))
+	}
+
 }
+

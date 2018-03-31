@@ -76,6 +76,7 @@
 			var camera, scene, renderer, controls;
 
 			var objects = [];
+			var rooms = [];
 
 			var raycaster_north, raycaster_south, raycaster_east, raycaster_west, raycaster_y;
 
@@ -176,8 +177,8 @@
 				screen1 = new MovieScreen("textures/revenge_sith.mp4", 299.8, 70, -130, "R");
 				screen1.video.pause();
 
-			 screen2 = new MovieScreen("textures/rogue_one.mp4", -299.8, 70, -130);
-				//screen2.video.pause();
+			 	screen2 = new MovieScreen("textures/rogue_one.mp4", -299.8, 70, -130);
+				screen2.video.pause();
 
 				screen3 = new MovieScreen("textures/return_jedi.mp4", 299.8, 70, -315);
 				screen3.video.pause();
@@ -191,13 +192,18 @@
 				objects.push(screen4.movieScreen);
 
 				// projection rooms
-				projectionRoom1 = new ProjectionRoom(300, 120, 220, 163, 8.6, -130, "B", objects);
-				projectionRoom2 = new ProjectionRoom(300, 120, 220, -163, 8.6, -130, "F", objects);
-				projectionRoom3 = new ProjectionRoom(300, 120, 220, 163, 8.6, -310, "B", objects);
-				projectionRoom4 = new ProjectionRoom(300, 120, 220, -163, 8.6, -310, "F", objects);
+				projectionRoom1 = new ProjectionRoom(300, 120, 220, 163, 8.6, -130, "B", objects, screen1);
+				projectionRoom2 = new ProjectionRoom(300, 120, 220, -163, 8.6, -130, "F", objects, screen2);
+				projectionRoom3 = new ProjectionRoom(300, 120, 220, 163, 8.6, -310, "B", objects, screen3);
+				projectionRoom4 = new ProjectionRoom(300, 120, 220, -163, 8.6, -310, "F", objects, screen4);
 
 				// The camera will be located at 1.64 mts tall, the average height of a person in México
 				hallway = new Hallway(480, 25, 25, 0, 8.6, -220, objects);
+
+				rooms.push(projectionRoom1);
+				rooms.push(projectionRoom2);
+				rooms.push(projectionRoom3);
+				rooms.push(projectionRoom4);
 
 			}
 
@@ -227,10 +233,28 @@
 				*/
 
 				// Render videos. Condition to render only when in room
-				screen1.renderVideoScreen();
-				screen2.renderVideoScreen();
-				screen3.renderVideoScreen();
-				screen4.renderVideoScreen();
+				// console.log(controls.getObject().position); // This is the character's position
+
+				for(var i = 0; i < rooms.length; i++){
+					if(rooms[i].hasInside(controls.getObject().position)){
+						rooms[i].screen.video.play();
+						rooms[i].screen.renderVideoScreen();
+						if(rooms[i].lights_array[rooms[i].lights_array.length - 1].intensity != 0){
+							for(var j = 0; j < rooms[i].lights_array.length; j++){
+								rooms[i].lights_array[j].intensity = 0;
+							}
+						}
+					}else{
+						if(rooms[i].lights_array[rooms[i].lights_array.length - 1].intensity == 0){
+							for(var j = 0; j < rooms[i].lights_array.length; j++){
+								rooms[i].lights_array[j].intensity = 1;
+							}
+						}
+						rooms[i].screen.video.pause();
+						rooms[i].screen.video.currentTime = 0;
+					}
+				}
+
 				renderer.render( scene, camera );
 			}
 
