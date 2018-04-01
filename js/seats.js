@@ -8,16 +8,18 @@ class Seat {
             var material = new THREE.MeshStandardMaterial( { color: 'red' } );
 
             var seat = new THREE.Mesh( geometry, material );
-            
+
             seat.position.x = x;
             seat.position.y = y;
-            seat.position.z = z;    
-            seat.scale.x = .025;
-            seat.scale.y = .025;
-            seat.scale.z = .025;
-            
+            seat.position.z = z;
+            seat.scale.x = .017;
+            seat.scale.y = .017;
+            seat.scale.z = .017;
+
             if (door == "F"){
-                seat.rotation.y = Math.PI;
+                seat.rotation.y = Math.PI/2;
+            } else {
+              seat.rotation.y = -Math.PI/2;
             }
 
             scene.add( seat );

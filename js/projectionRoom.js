@@ -2,7 +2,7 @@
 class ProjectionRoom{
 
 	constructor(width, height, depth, x, y, z, door, objects){
-		
+
 		//lights
 		var room_light1;
 		var room_light2;
@@ -12,8 +12,17 @@ class ProjectionRoom{
 		this.lights_array = [];
 		this.seats_array = [];
 
+		// Floor
+		var geometry = new THREE.PlaneGeometry(width ,depth );
+		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x000000} );
+		var floor = new THREE.Mesh( geometry, material );
+		floor.position.set(x,y,z);
+		floor.rotation.x = Math.PI / 2;
+		floor.receiveShadow = true;
+		scene.add(floor);
+
 		//roof
-		var geometry = new THREE.PlaneBufferGeometry( depth, width );
+		var geometry = new THREE.PlaneBufferGeometry(width, depth );
 		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide} );
 		var roof = new THREE.Mesh( geometry, material );
 		roof.position.set(x, height + y, z);
@@ -22,20 +31,23 @@ class ProjectionRoom{
 		scene.add(roof);
 
 		//wall material
-		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, shadowSide: THREE.DoubleSide} );
+		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, shadowSide: THREE.DoubleSide, color: 0x000000} );
 
 		//walls. Width: 1.5. Height: 2
 		var geometry1 = new THREE.PlaneGeometry( (depth / 2) - 20, height );
 		var geometry2 = new THREE.PlaneGeometry( 40, height - 40 );
 
 		// Front wall
-		if(door == "F"){
+		if(door == "F"){ // Left side of the hallway
 			this.frontWall1 = new THREE.Mesh( geometry1, material );
 			this.frontWall2 = new THREE.Mesh( geometry1, material );
 			this.frontWall3 = new THREE.Mesh( geometry2, material );
-			this.frontWall1.position.set(x - (depth / 4) - 10, height / 2, z - (width / 2));
-			this.frontWall2.position.set(x + (depth / 4) + 10, height / 2, z - (width / 2));
-			this.frontWall3.position.set(x, (height / 2) + 20, z - (width / 2));
+			this.frontWall1.position.set(x + (width / 2), height / 2, z - (depth / 4) - 10);
+			this.frontWall2.position.set(x + (width / 2), height / 2, z + (depth / 4) + 10);
+			this.frontWall3.position.set(x + (width / 2), (height / 2) + 20, z);
+			this.frontWall1.rotation.y = Math.PI/2;
+			this.frontWall2.rotation.y = Math.PI/2;
+			this.frontWall3.rotation.y = Math.PI/2;
 			scene.add(this.frontWall1);
 			scene.add(this.frontWall2);
 			scene.add(this.frontWall3);
@@ -44,9 +56,9 @@ class ProjectionRoom{
 			objects.push(this.frontWall3);
 
 			// Seats
-			for(var i = 80; i <= (width - 50); i += 50){
-				for (var j = 50; j <= (depth - 40); j += 15){
-					var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
+			for(var i = 40; i <= (width - 50); i += 25){
+				for (var j = 40; j <= (depth - 50); j += 15){
+					var seat = new Seat(x - (width / 2) + i, y, z - (depth / 2) + j, door);
 					this.seats_array.push(seat);
 				}
 			}
@@ -54,7 +66,8 @@ class ProjectionRoom{
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
 			this.frontWall = new THREE.Mesh( geometry, material );
-			this.frontWall.position.set(x, height / 2, z - (width / 2));
+			this.frontWall.position.set(x + (width / 2), height / 2, z);
+			this.frontWall.rotation.y = -Math.PI/2;
 			scene.add(this.frontWall);
 			objects.push(this.frontWall);
 
@@ -65,9 +78,12 @@ class ProjectionRoom{
 			this.backWall1 = new THREE.Mesh( geometry1, material );
 			this.backWall2 = new THREE.Mesh( geometry1, material );
 			this.backWall3 = new THREE.Mesh( geometry2, material );
-			this.backWall1.position.set(x - (depth / 4) - 10, height / 2, z + (width / 2));
-			this.backWall2.position.set(x + (depth / 4) + 10, height / 2, z + (width / 2));
-			this.backWall3.position.set(x, (height / 2) + 20, z + (width / 2));
+			this.backWall1.position.set(x - (width / 2), height / 2, z - (depth / 4) - 10);
+			this.backWall2.position.set(x - (width / 2), height / 2, z + (depth / 4) + 10);
+			this.backWall3.position.set(x - (width / 2), (height / 2) + 20, z);
+			this.backWall1.rotation.y = -Math.PI/2;
+			this.backWall2.rotation.y = -Math.PI/2;
+			this.backWall3.rotation.y = -Math.PI/2;
 			scene.add(this.backWall1);
 			scene.add(this.backWall2);
 			scene.add(this.backWall3);
@@ -76,9 +92,9 @@ class ProjectionRoom{
 			objects.push(this.backWall3);
 
 			// Seats
-			for(var i = 80; i <= (width - 50); i += 50){
+			for(var i = 40; i <= (width - 50); i += 25){
 				for (var j = 40; j <= (depth - 50); j += 15){
-					var seat = new Seat(x - (depth / 2) + j, y, z - (width / 2) + i, door);
+					var seat = new Seat(x - (width / 2) + i, y, z - (depth / 2) + j, door);
 					this.seats_array.push(seat);
 				}
 			}
@@ -86,7 +102,8 @@ class ProjectionRoom{
 		} else {
 			var geometry = new THREE.PlaneGeometry( depth, height );
 			this.backWall = new THREE.Mesh( geometry, material );
-			this.backWall.position.set(x, height / 2, z + (width / 2));
+			this.backWall.position.set(x - (width / 2), height / 2, z);
+			this.backWall.rotation.y = Math.PI/2;
 			scene.add(this.backWall);
 			objects.push(this.backWall);
 		}
@@ -94,8 +111,7 @@ class ProjectionRoom{
 		// Right wall
 		var geometry = new THREE.BoxGeometry( width, height, 0 );
 		this.rightWall = new THREE.Mesh( geometry, material );
-		this.rightWall.position.set(x + (depth / 2), height / 2, z);
-		this.rightWall.rotation.y = Math.PI / 2;
+		this.rightWall.position.set(x, height / 2, z + (depth / 2));
 		this.rightWall.castShadow = true; //default is false
 		this.rightWall.receiveShadow = true; //default
 		scene.add(this.rightWall);
@@ -104,8 +120,7 @@ class ProjectionRoom{
 		// Left wall
 		var geometry = new THREE.PlaneGeometry( width, height );
 		this.leftWall = new THREE.Mesh( geometry, material );
-		this.leftWall.position.set(x - (depth / 2), height / 2, z);
-		this.leftWall.rotation.y = Math.PI / 2;
+		this.leftWall.position.set(x, height / 2, z - (depth / 2));
 		this.leftWall.castShadow = true; //default is false
 		this.leftWall.receiveShadow = true; //default
 		scene.add(this.leftWall);
@@ -122,10 +137,10 @@ class ProjectionRoom{
 		room_light2.castShadow = true;
 
 
-		pointLightHelper1 = new THREE.PointLightHelper( room_light1, 2 );
+		pointLightHelper1 = new THREE.PointLightHelper( room_light1, 0.5 );
 		scene.add( pointLightHelper1 );
 
-		pointLightHelper2 = new THREE.PointLightHelper( room_light2, 2 );
+		pointLightHelper2 = new THREE.PointLightHelper( room_light2, 0.5 );
 		scene.add( pointLightHelper2 );
 
 		scene.add( room_light1 );

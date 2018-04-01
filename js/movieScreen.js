@@ -1,7 +1,7 @@
 // creating a movie screen
 
 class MovieScreen{
-	constructor(path, x, y, z){
+	constructor(path, x, y, z, side){
 		// create the video element
 		this.video = document.createElement( 'video' );
 		// video.id = 'video';
@@ -10,15 +10,15 @@ class MovieScreen{
 		this.video.src = path;
 		this.video.load(); // must call after setting/changing source
 		this.video.play();
-		
-		// alternative method -- 
+
+		// alternative method --
 		// create DIV in HTML:
 		// <video id="myVideo" autoplay style="display:none">
 		// 		<source src="videos/sintel.ogv" type='video/ogg; codecs="theora, vorbis"'>
 		// </video>
 		// and set JS variable:
 		// video = document.getElementById( 'myVideo' );
-		
+
 		this.videoImage = document.createElement( 'canvas' );
 		this.videoImage.width = 1280;
 		this.videoImage.height = 720;
@@ -30,7 +30,7 @@ class MovieScreen{
 		this.videoTexture.minFilter = THREE.LinearFilter;
 		this.videoTexture.magFilter = THREE.LinearFilter;
 		//videoTexture.format = THREE.RGBFormat;
-		
+
 		this.movieMaterial = new THREE.MeshBasicMaterial( {
 			map: this.videoTexture, overdraw: true, side:THREE.DoubleSide } );
 		// the geometry on which the movie will be displayed;
@@ -38,14 +38,19 @@ class MovieScreen{
 		this.movieGeometry = new THREE.PlaneGeometry( 200, 84, 4, 4 );
 		this.movieScreen = new THREE.Mesh( this.movieGeometry, this.movieMaterial );
 		this.movieScreen.position.set(x,y,z);
+		if(side == "R") {
+      this.movieScreen.rotation.y = -Math.PI / 2;
+    } else {
+      this.movieScreen.rotation.y = Math.PI / 2;
+    }
 		scene.add(this.movieScreen);
 	}
 
 	renderVideoScreen(){
-		if ( this.video.readyState === this.video.HAVE_ENOUGH_DATA ) 
+		if ( this.video.readyState === this.video.HAVE_ENOUGH_DATA )
 		{
 			this.videoImageContext.drawImage( this.video, 0, 0 );
-			if ( this.videoTexture ) 
+			if ( this.videoTexture )
 				this.videoTexture.needsUpdate = true;
 		}
 	}
