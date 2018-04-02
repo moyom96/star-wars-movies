@@ -9,7 +9,7 @@ class ProjectionRoom{
 		this.y = y;
 		this.z = z;
 		this.screen = screen;
-		
+
 		//lights
 		var room_light1;
 		var room_light2;
@@ -65,7 +65,7 @@ class ProjectionRoom{
 			// Seats
 			for(var i = 40; i <= (width - 50); i += 25){
 				for (var j = 40; j <= (depth - 50); j += 15){
-					var seat = new Seat(x - (width / 2) + i, y, z - (depth / 2) + j, door);
+					var seat = new Seat(x - (width / 2) + i + 25, y, z - (depth / 2) + j + 15, door);
 					this.seats_array.push(seat);
 				}
 			}
@@ -189,4 +189,3 @@ class ProjectionRoom{
 	}
 
 }
-
