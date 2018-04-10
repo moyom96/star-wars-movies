@@ -20,8 +20,9 @@ class ProjectionRoom{
 		this.seats_array = [];
 
 		// Floor
+		var grayCarpet = new THREE.TextureLoader().load('./textures/carpet-room.jpg');
 		var geometry = new THREE.PlaneGeometry(width ,depth );
-		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x000000} );
+		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, map: grayCarpet} );
 		var floor = new THREE.Mesh( geometry, material );
 		floor.position.set(x,y,z);
 		floor.rotation.x = Math.PI / 2;
@@ -29,16 +30,20 @@ class ProjectionRoom{
 		scene.add(floor);
 
 		//roof
+		var blackCeiling = new THREE.TextureLoader().load('./textures/black-ceiling.jpg');
 		var geometry = new THREE.PlaneBufferGeometry(width, depth );
-		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide} );
+		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, map: blackCeiling} );
 		var roof = new THREE.Mesh( geometry, material );
 		roof.position.set(x, height + y, z);
 		roof.rotation.x = Math.PI / 2;
 		roof.castShadow = true;
 		scene.add(roof);
 
+		//Wall texture
+		var blackWalls = new THREE.TextureLoader().load('./textures/black-walls.jpg');
+		
 		//wall material
-		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, shadowSide: THREE.DoubleSide, color: 0x000000} );
+		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, shadowSide: THREE.DoubleSide, map: blackWalls} );
 
 		//walls. Width: 1.5. Height: 2
 		var geometry1 = new THREE.PlaneGeometry( (depth / 2) - 20, height );
@@ -66,7 +71,7 @@ class ProjectionRoom{
 			for(var i = 40; i <= (width - 50); i += 25){
 				for (var j = 40; j <= (depth - 50); j += 15){
 					var seat = new Seat(x - (width / 2) + i + 25, y, z - (depth / 2) + j + 15, door);
-					this.seats_array.push(seat);
+					this.seats_array.push(seat.mater);
 				}
 			}
 
