@@ -41,7 +41,7 @@ class ProjectionRoom{
 
 		//Wall texture
 		var blackWalls = new THREE.TextureLoader().load('./textures/black-walls.jpg');
-		
+
 		//wall material
 		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, shadowSide: THREE.DoubleSide, map: blackWalls} );
 

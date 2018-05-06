@@ -13,7 +13,7 @@ function init_movement(){
 
 			case 37: // left
 			case 65: // a
-				moveLeft = true; 
+				moveLeft = true;
 				break;
 
 			case 40: // down
@@ -67,7 +67,6 @@ function init_movement(){
 }
 
 function collisions(velocity, direction){
-
 	raycaster_north = new THREE.Raycaster( new THREE.Vector3(camera.position.x, camera.position.y, camera.position.z), new THREE.Vector3( 0, 0, 1 ), 0, 10 );
 
 	raycaster_north.ray.origin.copy( controls.getObject().position );
@@ -134,27 +133,27 @@ function collisions(velocity, direction){
 			if(direction.x == -1){
 				velocity.x = 0;
 			}
-			
-		} 
+
+		}
 
 		if (camera.getWorldDirection(worldDirection).x < 0){
 			if(direction.x == 1){
 				velocity.x = 0;
 			}
 		}
-			
+
 		if (camera.getWorldDirection(worldDirection).z >= 0){
 			if(direction.z == 1){
 				velocity.z = 0;
 			}
-			
+
 		}
 
 		if (camera.getWorldDirection(worldDirection).z < 0){
 			if(direction.z == -1){
 				velocity.z = 0;
 			}
-			
+
 		}
 	}
 
@@ -163,27 +162,27 @@ function collisions(velocity, direction){
 			if(direction.x == 1){
 				velocity.x = 0;
 			}
-			
-		} 
+
+		}
 
 		if (camera.getWorldDirection(worldDirection).x < 0){
 			if(direction.x == -1){
 				velocity.x = 0;
 			}
 		}
-			
+
 		if (camera.getWorldDirection(worldDirection).z >= 0){
 			if(direction.z == -1){
 				velocity.z = 0;
 			}
-			
+
 		}
 
 		if (camera.getWorldDirection(worldDirection).z < 0){
 			if(direction.z == 1){
 				velocity.z = 0;
 			}
-			
+
 		}
 	}
 
@@ -192,27 +191,27 @@ function collisions(velocity, direction){
 			if(direction.z == 1){
 				velocity.z = 0;
 			}
-			
-		} 
+
+		}
 
 		if (camera.getWorldDirection(worldDirection).x < 0){
 			if(direction.z == -1){
 				velocity.z = 0;
 			}
 		}
-			
+
 		if (camera.getWorldDirection(worldDirection).z >= 0){
 			if(direction.x == 1){
 				velocity.x = 0;
 			}
-			
+
 		}
 
 		if (camera.getWorldDirection(worldDirection).z < 0){
 			if(direction.x == -1){
 				velocity.x = 0;
 			}
-			
+
 		}
 	}
 
@@ -221,34 +220,34 @@ function collisions(velocity, direction){
 			if(direction.z == -1){
 				velocity.z = 0;
 			}
-			
-		} 
+
+		}
 
 		if (camera.getWorldDirection(worldDirection).x < 0){
 			if(direction.z == 1){
 				velocity.z = 0;
 			}
 		}
-			
+
 		if (camera.getWorldDirection(worldDirection).z >= 0) {
 			if(direction.x == -1){
 				velocity.x = 0;
 			}
-			
+
 		}
 
 		if (camera.getWorldDirection(worldDirection).z < 0){
 			if(direction.x == 1){
 				velocity.x = 0;
 			}
-			
+
 		}
 	}
 
 	controls.getObject().translateX( velocity.x * delta );
 	controls.getObject().translateY( velocity.y * delta );
 	controls.getObject().translateZ( velocity.z * delta );
-	
+
 	if ( controls.getObject().position.y < 10 ) {
 		velocity.y = 0;
 		controls.getObject().position.y = 10;
@@ -258,4 +257,6 @@ function collisions(velocity, direction){
 	if ( controlsEnabled === true ) {
 		prevTime = time;
 	}
+
+
 }

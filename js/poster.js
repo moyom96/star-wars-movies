@@ -39,3 +39,49 @@ class Poster{
     objects.push(image);
   }
 }
+
+class PosterSection {
+	constructor( width, height, depth, x, y, z, name){
+		this.width = width;
+		this.height = height;
+		this.depth = depth;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.name = name;
+
+	/*	var gp1 = new THREE.BoxGeometry(width, height, depth);
+		var material = new THREE.MeshStandardMaterial();
+		var cube = new THREE.Mesh( gp1, material );
+		cube.position.set(x, y,z);
+		scene.add(cube);
+*/
+	}
+	hasInside(positionVector){
+		return (positionVector.x >= (this.x - this.width/2) && positionVector.x <= (this.x + this.width/2)
+			&& positionVector.z >= (this.z - this.depth/2) && positionVector.z <= (this.z + this.depth/2))
+	}
+
+}
+
+class InfoPoster {
+	constructor(width, height, x, y, z, name, side, file){
+		this.name = name;
+
+		var geometry = new THREE.PlaneGeometry(width, height);
+    var	texture = new THREE.TextureLoader().load(file);
+    var material = new THREE.MeshStandardMaterial({ map: texture});
+    var info = new THREE.Mesh(geometry, material);
+		if (side == "L") {
+        info.rotation.y = Math.PI / 2;
+    } else {
+        info.rotation.y = - Math.PI / 2;
+    }
+		info.position.set(x,y,z);
+		var group = new THREE.Group();
+		group.add(info);
+		group.visible = false;
+		posterInfos.push(group);
+		scene.add(group);
+	}
+}

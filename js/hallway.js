@@ -1,7 +1,7 @@
 
 class Hallway{
 
-	constructor(width, height, depth, x, y, z, objects){
+	constructor(width, height, depth, x, y, z, objects, posters){
 
 		var room_light1, room_light2, room_light3, pointLightHelper1, pointLightHelper2, pointLightHelper3;
 
@@ -37,6 +37,8 @@ class Hallway{
 		var frontWall = new THREE.Mesh( geometry, material );
 		frontWall.position.set(x, y + (height / 2), z - (width / 2));
 		scene.add(frontWall);
+
+		objects.push(frontWall);
 
  		// Geometry and material for walls
 		var wallSize = (width - 40) / 3;
@@ -150,27 +152,67 @@ class Hallway{
 		scene.add( room_light3 );
 
 		// Posters. The poster will be located at 1.50 mts from the ground
-		var p1 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, ( z + wallSize + 25) - wallSize/4, objects, "textures/sw1.jpg", "R");
-		var p2 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, ( z + wallSize + 25) + wallSize/4, objects, "textures/sw2.jpg", "R");
+		// Segundo derecha SW2
+		var p1 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, ( z + wallSize + 25) - wallSize/4, objects, "textures/sw2.jpg", "R");
+		var posterSection1 = new PosterSection(15,25,34,(depth / 2) - 5, y + 12, z + (wallSize + 25) - (wallSize/4), "p1");
+		var pInfo1 = new InfoPoster(10, 15, x + (depth / 2) - 1, y + 15, ( z + wallSize + 25) - wallSize/4, "p1", "R", "textures/infoSW2.png");
 
+		// Primero derecha SW1
+		var p2 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, ( z + wallSize + 25) + wallSize/4, objects, "textures/sw1.jpg", "R");
+		var posterSection2 = new PosterSection(15,25,34,(depth / 2) - 5, y + 12, ( z + wallSize + 25) + wallSize/4, "p2");
+		var pInfo2 = new InfoPoster(10, 15, x + (depth / 2) - 1, y + 15, ( z + wallSize + 25) + wallSize/4, "p2", "R", "textures/infoSW1.png");
 
+		// Tercero derecha
 		var p3 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, z - wallSize/4, objects, "textures/sw5.jpg", "R");
+		var posterSection3 = new PosterSection(15,25,34,(depth / 2) - 5 , y + 12, z - wallSize/4,"p3");
+		var pInfo3 = new InfoPoster(10, 15, x + (depth / 2) - 1, y + 15, z - wallSize/4, "p2", "R", "textures/infoSW5.png");
+
+		// Cuarto derecha
 		var p4 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, z + wallSize/4, objects, "textures/sw6.jpg", "R");
+		var posterSection4 = new PosterSection(15,25,34,x + (depth / 2) - 5 , y + 12, z + wallSize/4, "p4");
+		var pInfo4 = new InfoPoster(10, 15, x + (depth / 2) - 1, y + 15, z + wallSize/4, "p2", "R", "textures/infoSW6.png");
 
-
+		// Quinto derecha
 		var p5 = new Poster(6.6, 10, x + (depth / 2) - 0.1 , y + 15, ( z - wallSize - 25) + wallSize/4, objects, "textures/ro.png", "R");
-		var p6 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, ( z - wallSize - 25) + wallSize/4, objects, "textures/cw.jpg", "L");
+		var posterSection5 = new PosterSection(15,25,34,(depth / 2) - 5 , y + 12, ( z - wallSize - 25) + wallSize/4, "p5");
+		var pInfo5 = new InfoPoster(10, 15, x + (depth / 2) - 1, y + 15,( z - wallSize - 25) + wallSize/4, "p2", "R", "textures/infoRO.png");
 
+		// Quinto izquierda
+		var p6 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, ( z - wallSize - 25) + wallSize/4, objects, "textures/solo.jpg", "L");
+		var posterSection6 = new PosterSection(15,25,34,x - (depth / 2) + 5 , y + 12, ( z - wallSize - 25) + wallSize/4, "p6");
+		var pInfo6 = new InfoPoster(10, 15,  x - (depth / 2) + 1, y + 15,( z - wallSize - 25) + wallSize/4, "p2", "L", "textures/infoSOLO.png");
 
+		// Primero izquierda
 		var p7 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, ( z + wallSize + 25) + wallSize/4, objects, "textures/sw3.jpg", "L");
+		var posterSection7 = new PosterSection(15,25,34,x - (depth / 2) + 5 , y + 12, ( z + wallSize + 25) + wallSize/4, "p7");
+		var pInfo7 = new InfoPoster(10, 15,  x - (depth / 2) + 1, y + 15,( z + wallSize + 25) + wallSize/4, "p2", "L", "textures/infoSW3.png");
+
+		// Segundo izquierda
 		var p8 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, ( z + wallSize + 25) - wallSize/4, objects, "textures/sw4.jpg", "L");
+		var posterSection8 = new PosterSection(15,25,34,x - (depth / 2) + 5 , y + 12, ( z + wallSize + 25) - wallSize/4, "p8");
+		var pInfo8 = new InfoPoster(10, 15,  x - (depth / 2) + 1, y + 15,( z + wallSize + 25) - wallSize/4, "p2", "L", "textures/infoSW4.png");
 
-
+		// Tercer izquierda
 		var p9 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, z + wallSize/4, objects, "textures/sw7.jpg", "L");
+		var posterSection9 = new PosterSection(15,25,34,x - (depth / 2) + 5 , y + 12, z + wallSize/4, "p9");
+		var pInfo9 = new InfoPoster(10, 15,  x - (depth / 2) + 1, y + 15, z + wallSize/4, "p2", "L", "textures/infoSW7.png");
+
+		// Cuarto izquierda
 		var p10 = new Poster(6.6, 10, x - (depth / 2) + 0.1 , y + 15, z - wallSize/4, objects, "textures/sw8.jpg", "L");
+		var posterSection10 = new PosterSection(15,25,34,x - (depth / 2) + 5 , y + 12, z - wallSize/4, "p10");
+		var pInfo10 = new InfoPoster(10, 15,  x - (depth / 2) + 1, y + 15, z - wallSize/4, "p2", "L", "textures/infoSW8.png");
 
+		posters.push(posterSection1);
+		posters.push(posterSection2);
+		posters.push(posterSection3);
+		posters.push(posterSection4);
+		posters.push(posterSection5);
+		posters.push(posterSection6);
+		posters.push(posterSection7);
+		posters.push(posterSection8);
+		posters.push(posterSection9);
+		posters.push(posterSection10);
 
-		objects.push(frontWall);
 	}
 
 }

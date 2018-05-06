@@ -77,6 +77,7 @@
 
 			var objects = [];
 			var rooms = [];
+			var posters = [];
 
 			var raycaster_north, raycaster_south, raycaster_east, raycaster_west, raycaster_y;
 
@@ -199,7 +200,7 @@
 				projectionRoom4 = new ProjectionRoom(300, 120, 220, -163, 8.6, -310, "F", objects, screen4);
 
 				// The camera will be located at 1.64 mts tall, the average height of a person in México
-				hallway = new Hallway(480, 25, 25, 0, 8.6, -220, objects);
+				hallway = new Hallway(480, 25, 25, 0, 8.6, -220, objects, posters);
 
 				rooms.push(projectionRoom1);
 				rooms.push(projectionRoom2);
@@ -216,9 +217,8 @@
 
 			function animate() {
 				requestAnimationFrame( animate );
-
 				collisions(velocity, direction);
-
+				//poster_collision(direction);
 				// Turn off the lights on all rooms
 
 				/*
@@ -237,6 +237,7 @@
 				// console.log(controls.getObject().position); // This is the character's position
 
 				for(var i = 0; i < rooms.length; i++){
+
 					if(rooms[i].hasInside(controls.getObject().position)){
 						rooms[i].screen.video.play();
 						rooms[i].screen.renderVideoScreen();

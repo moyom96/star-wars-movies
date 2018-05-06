@@ -15,7 +15,7 @@
 				overflow: hidden;
 				font-family: arial;
 			}
-			#blocker {
+			#blocker{
 
 				position: absolute;
 				width: 100%;
@@ -23,7 +23,7 @@
 				background-color: rgba(0,0,0,0.5);
 
 			}
-			#instructions {
+			#instructions{
 				width: 100%;
 				height: 100%;
 
@@ -56,9 +56,9 @@
 		<script src="js/movement.js"></script>
 		<script src="js/movieScreen.js"></script>
 		<script src="js/projectionRoom.js"></script>
-        <script src="js/OBJLoader.js"></script>
-        <script src="js/STLLoader.js"></script>
-        <script src="js/seats.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/STLLoader.js"></script>
+    <script src="js/seats.js"></script>
 		<script src="js/hallway.js"></script>
 		<script src="js/poster.js"></script>
 
@@ -67,8 +67,10 @@
 				<span style="font-size:40px">Click to play</span>
 				<br />
 				(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+				<br  />
+				If you're near to a poster, press ENTER to see information about the movie.
 			</div>
-		</div>
+	</div>
 
 		<script>
 			var origin = new THREE.Object3D();
@@ -77,6 +79,10 @@
 
 			var objects = [];
 			var rooms = [];
+			var posters = [];
+			var posterName = "";
+			var posterIndex = 0;
+			var posterInfos = [];
 
 			var raycaster_north, raycaster_south, raycaster_east, raycaster_west, raycaster_y;
 
@@ -192,13 +198,13 @@
 				objects.push(screen4.movieScreen);
 
 				// projection rooms
-				projectionRoom1 = new ProjectionRoom(300, 120, 220, 163, 8.6, -130, "B", objects, screen1);
-				projectionRoom2 = new ProjectionRoom(300, 120, 220, -163, 8.6, -130, "F", objects, screen2);
-				projectionRoom3 = new ProjectionRoom(300, 120, 220, 163, 8.6, -310, "B", objects, screen3);
-				projectionRoom4 = new ProjectionRoom(300, 120, 220, -163, 8.6, -310, "F", objects, screen4);
+				projectionRoom1 = new ProjectionRoom(300, 120, 220, 168, 8.6, -130, "B", objects, screen1);
+				projectionRoom2 = new ProjectionRoom(300, 120, 220, -168, 8.6, -130, "F", objects, screen2);
+				projectionRoom3 = new ProjectionRoom(300, 120, 220, 168, 8.6, -310, "B", objects, screen3);
+				projectionRoom4 = new ProjectionRoom(300, 120, 220, -168, 8.6, -310, "F", objects, screen4);
 
 				// The camera will be located at 1.64 mts tall, the average height of a person in México
-				hallway = new Hallway(480, 25, 25, 0, 8.6, -220, objects);
+				hallway = new Hallway(480, 25, 35, 0, 8.6, -220, objects, posters);
 
 				rooms.push(projectionRoom1);
 				rooms.push(projectionRoom2);
@@ -217,7 +223,6 @@
 				requestAnimationFrame( animate );
 
 				collisions(velocity, direction);
-
 				// Turn off the lights on all rooms
 
 				/*
@@ -255,9 +260,45 @@
 					}
 				}
 
+				for(var i = 0; i < posters.length; i++){
+					//console.log(posters[i]);
+					if(posters[i].hasInside(controls.getObject().position)){
+
+						posterName = posters[i].name;
+						posterIndex = i;
+						document.onkeydown = function (e){
+							e = e || window.event;
+
+							if (e.keyCode == '13') {
+									console.log("Presionó enter");
+									console.log(posterName);
+									selectPoster(posterName, posterIndex);
+
+								}
+
+
+							}
+
+
+					}
+				}
+
+
 				renderer.render( scene, camera );
 			}
 
+			/*function openInNewTab(url) {
+  			var win = window.open(url, '_blank');
+  			win.focus();
+			}*/
+
+			function selectPoster(poster, i){
+						console.log(i);
+						console.log(posterInfos);
+						if(posterInfos[i].visible == true) posterInfos[i].visible = false;
+						else posterInfos[i].visible = true;
+
+			}
 			init();
 			animate();
 
