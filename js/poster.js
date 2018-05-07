@@ -1,3 +1,6 @@
+var geometry = new THREE.PlaneBufferGeometry();
+var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x330000});
+
 class Poster{
 
 	constructor( width, height, x, y, z, objects, file, side){
@@ -11,9 +14,6 @@ class Poster{
         rectLight.rotation.y = - Math.PI / 2;
     }
 
-
-    var geometry = new THREE.PlaneBufferGeometry();
-    var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x330000});
     var poster = new THREE.Mesh(geometry, material);
 
 		poster.scale.x = rectLight.width - 0.1;
