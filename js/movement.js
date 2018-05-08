@@ -25,12 +25,6 @@ function init_movement(){
 			case 68: // d
 				moveRight = true;
 				break;
-
-			case 32: // space
-				if ( canJump === true ) velocity.y += 350;
-				canJump = false;
-				break;
-
 		}
 
 	};
