@@ -20,9 +20,17 @@ class Hallway{
 		floor.rotation.x = Math.PI / 2;
 		scene.add(floor);
 
+
 		//roof
+
+		var	ceilingTexture = new THREE.TextureLoader().load("textures/ceiling.jpg", function( texture ){
+        texture.wrapT = texture.wrapS = THREE.RepeatWrapping;
+        texture.offset.set( 0, 0 );
+        texture.repeat.set( depth/5, width/10);
+    });
+
 		var geometry = new THREE.PlaneGeometry( depth, width );
-		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, color: 0x000000} );
+		var material = new THREE.MeshBasicMaterial( { side: THREE.DoubleSide, map: ceilingTexture} );
 		var roof = new THREE.Mesh( geometry, material );
 		roof.position.set(x, height + y, z);
 		roof.rotation.x = Math.PI / 2;
@@ -75,13 +83,17 @@ class Hallway{
 		scene.add(lastwall);
 		objects.push(lastwall);
         
-        var backwall1 = new THREE.Mesh( geometry2, material );
+        var doorTexture = new THREE.TextureLoader().load("textures/wood.jpg");
+
+        var doorMaterial = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, map: doorTexture} );
+
+        var backwall1 = new THREE.Mesh( geometry2, doorMaterial );
 		backwall1.position.set(x - depth + 1.5 , y + (height / 2), z + wallSize + 80); // end
 		backwall1.rotation.y = Math.PI;
 		scene.add(backwall1);
 		objects.push(backwall1);
         
-        var backwall2 = new THREE.Mesh( geometry2, material );
+        var backwall2 = new THREE.Mesh( geometry2, doorMaterial );
 		backwall2.position.set(x + depth - 1.5 , y + (height / 2), z + wallSize + 80); // end
 		backwall2.rotation.y = Math.PI;
 		scene.add(backwall2);
@@ -154,26 +166,17 @@ class Hallway{
 		objects.push(downlastwall);
 
 		// Lights
-		room_light1 = new THREE.PointLight( 0xfff0db, 1, 100);
+		room_light1 = new THREE.PointLight( 0xfff0db, 1, 100,2);
 		room_light1.position.set(x, y + height, z + wallSize);
 		room_light1.castShadow = true;
 
-		room_light2 = new THREE.PointLight( 0xfff0db, 1, 100);
+		room_light2 = new THREE.PointLight( 0xfff0db, 1, 100,2);
 		room_light2.position.set(x, y + height, z - wallSize);
 		room_light2.castShadow = true;
 
-		room_light3= new THREE.PointLight( 0xfff0db, 1, 100);
+		room_light3= new THREE.PointLight( 0xfff0db, 1, 100,2);
 		room_light3.position.set(x, y + height, z);
 		room_light3.castShadow = true;
-
-		pointLightHelper1 = new THREE.PointLightHelper( room_light1, 2 );
-		scene.add( pointLightHelper1 );
-
-		pointLightHelper2 = new THREE.PointLightHelper( room_light2, 2 );
-		scene.add( pointLightHelper2 );
-
-		pointLightHelper3 = new THREE.PointLightHelper( room_light3, 2 );
-		scene.add( pointLightHelper3 );
 
 		scene.add( room_light1 );
 		scene.add( room_light2 );
