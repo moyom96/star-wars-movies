@@ -44,6 +44,10 @@ class Hallway{
 		var wallSize = (width - 40) / 3;
 		var geometry = new THREE.PlaneGeometry( wallSize, height );
 		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, map: wallTexture} );
+        
+        
+        var wallSize2 = (width - 80) / 6;
+		var geometry2 = new THREE.PlaneGeometry( wallSize2, height );
 
 		var rightWall1 = new THREE.Mesh( geometry, material );
 		rightWall1.position.set(x + (depth / 2), y + (height / 2), z + wallSize + 25); // First
@@ -64,6 +68,24 @@ class Hallway{
 		rightWall3.rotation.y = -Math.PI / 2;
 		scene.add(rightWall3);
 		objects.push(rightWall3);
+        
+        var lastwall = new THREE.Mesh( geometry2, material );
+		lastwall.position.set(x, y + (height / 2), z - wallSize - 55); // end
+		lastwall.rotation.y = Math.PI;
+		scene.add(lastwall);
+		objects.push(lastwall);
+        
+        var backwall1 = new THREE.Mesh( geometry2, material );
+		backwall1.position.set(x - depth + 1.5 , y + (height / 2), z + wallSize + 80); // end
+		backwall1.rotation.y = Math.PI;
+		scene.add(backwall1);
+		objects.push(backwall1);
+        
+        var backwall2 = new THREE.Mesh( geometry2, material );
+		backwall2.position.set(x + depth - 1.5 , y + (height / 2), z + wallSize + 80); // end
+		backwall2.rotation.y = Math.PI;
+		scene.add(backwall2);
+		objects.push(backwall2);
 
 		var geometry = new THREE.PlaneGeometry( wallSize, height );
 		var material = new THREE.MeshStandardMaterial( { side: THREE.DoubleSide, map: wallTexture} );
@@ -124,6 +146,12 @@ class Hallway{
 		downWallL3.rotation.y = Math.PI / 2;
 		scene.add(downWallL3);
 		objects.push(downWallL3);
+        
+        var downlastwall = new THREE.Mesh( geometry, material );
+		downlastwall.position.set(x , y + (1.5/2), z - wallSize - 55 + 0.1); // end
+		downlastwall.rotation.y = Math.PI;
+		scene.add(downlastwall);
+		objects.push(downlastwall);
 
 		// Lights
 		room_light1 = new THREE.PointLight( 0xfff0db, 1, 100);
