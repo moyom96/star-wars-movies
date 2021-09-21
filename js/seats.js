@@ -2,7 +2,7 @@
 class Seat {
   constructor(x, y, z, door) {
     var loader = new THREE.STLLoader();
-    loader.load('assets/chairstl.stl', function (geometry) {
+    loader.load('assets/chairg.stl', function (geometry) {
       var material = new THREE.MeshStandardMaterial({ color: 'red' });
 
       var seat = new THREE.Mesh(geometry, material);
